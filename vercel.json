@@ -1,0 +1,14 @@
+{
+  "builds": [
+    {
+      "src": "*.html",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/Relatorio_Auditoria_Profissional.html"
+    }
+  ]
+}

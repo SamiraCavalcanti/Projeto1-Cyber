@@ -1,0 +1,24 @@
+{
+  "name": "projeto-auditoria-cyber",
+  "version": "1.0.0",
+  "description": "Laboratório de Auditoria de Segurança de Rede - Projeto de Cybersecurity",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'Static site - no build needed'",
+    "start": "npx serve ."
+  },
+  "keywords": [
+    "cybersecurity",
+    "network-audit",
+    "penetration-testing",
+    "nmap",
+    "vulnerability-assessment"
+  ],
+  "author": "Samira Cavalcanti",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SamiraCavalcanti/Projeto1-Cyber.git"
+  }
+}
