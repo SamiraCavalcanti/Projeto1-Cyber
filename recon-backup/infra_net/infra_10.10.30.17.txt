@@ -1,0 +1,16 @@
+# Nmap 7.95 scan initiated Sat Jul 26 21:17:33 2025 as: /usr/lib/nmap/nmap -sS -sV -O -p- --script=default -oN infra_10.10.30.17.txt 10.10.30.17
+Nmap scan report for openldap.projeto_final_opcao_1_infra_net (10.10.30.17)
+Host is up (0.000056s latency).
+Not shown: 65533 closed tcp ports (reset)
+PORT    STATE SERVICE  VERSION
+389/tcp open  ldap     OpenLDAP 2.2.X - 2.3.X
+636/tcp open  ldapssl?
+MAC Address: 5A:0C:B8:B1:A3:72 (Unknown)
+Device type: general purpose
+Running: Linux 4.X|5.X
+OS CPE: cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5
+OS details: Linux 4.15 - 5.19, OpenWrt 21.02 (Linux 5.4)
+Network Distance: 1 hop
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Sat Jul 26 21:17:47 2025 -- 1 IP address (1 host up) scanned in 13.89 seconds

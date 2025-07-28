@@ -1,0 +1,6 @@
+10.10.10.1 (10.10.10.1)
+10.10.10.10 (WS_001.projeto_final_opcao_1_corp_net)
+10.10.10.101 (WS_002.projeto_final_opcao_1_corp_net)
+10.10.10.127 (WS_003.projeto_final_opcao_1_corp_net)
+10.10.10.222 (WS_004.projeto_final_opcao_1_corp_net)
+10.10.10.2 (22e0c587bb1a)

@@ -1,0 +1,30 @@
+# Nmap 7.95 scan initiated Sat Jul 26 21:17:05 2025 as: /usr/lib/nmap/nmap -sS -sV -O -p- --script=default -oN infra_10.10.30.11.txt 10.10.30.11
+Nmap scan report for mysql-server.projeto_final_opcao_1_infra_net (10.10.30.11)
+Host is up (0.000053s latency).
+Not shown: 65533 closed tcp ports (reset)
+PORT      STATE SERVICE VERSION
+3306/tcp  open  mysql   MySQL 8.0.42
+|_ssl-date: TLS randomness does not represent time
+| ssl-cert: Subject: commonName=MySQL_Server_8.0.42_Auto_Generated_Server_Certificate
+| Not valid before: 2025-07-20T20:30:19
+|_Not valid after:  2035-07-18T20:30:19
+| mysql-info: 
+|   Protocol: 10
+|   Version: 8.0.42
+|   Thread ID: 15
+|   Capabilities flags: 65535
+|   Some Capabilities: DontAllowDatabaseTableColumn, Speaks41ProtocolNew, ConnectWithDatabase, SupportsLoadDataLocal, Speaks41ProtocolOld, SwitchToSSLAfterHandshake, SupportsTransactions, ODBCClient, IgnoreSpaceBeforeParenthesis, IgnoreSigpipes, SupportsCompression, FoundRows, LongPassword, Support41Auth, LongColumnFlag, InteractiveClient, SupportsMultipleStatments, SupportsMultipleResults, SupportsAuthPlugins
+|   Status: Autocommit
+|   Salt: \x1CIO\x06:	5x\x06l`\x18
+| |\x01\x04EXN5
+|_  Auth Plugin Name: caching_sha2_password
+33060/tcp open  mysqlx  MySQL X protocol listener
+MAC Address: 2A:76:D4:7D:15:52 (Unknown)
+Device type: general purpose|router
+Running: Linux 4.X|5.X, MikroTik RouterOS 7.X
+OS CPE: cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5 cpe:/o:mikrotik:routeros:7 cpe:/o:linux:linux_kernel:5.6.3
+OS details: Linux 4.15 - 5.19, OpenWrt 21.02 (Linux 5.4), MikroTik RouterOS 7.2 - 7.5 (Linux 5.6.3)
+Network Distance: 1 hop
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Sat Jul 26 21:17:14 2025 -- 1 IP address (1 host up) scanned in 8.96 seconds

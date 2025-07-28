@@ -1,0 +1,11 @@
+# Nmap 7.95 scan initiated Sat Jul 26 21:10:48 2025 as: /usr/lib/nmap/nmap -sS -sV -O -p- --script=default -oN corp_10.10.10.127.txt 10.10.10.127
+Nmap scan report for WS_003.projeto_final_opcao_1_corp_net (10.10.10.127)
+Host is up (0.000051s latency).
+All 65535 scanned ports on WS_003.projeto_final_opcao_1_corp_net (10.10.10.127) are in ignored states.
+Not shown: 65535 closed tcp ports (reset)
+MAC Address: CE:2E:27:FD:C3:94 (Unknown)
+Too many fingerprints match this host to give specific OS details
+Network Distance: 1 hop
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Sat Jul 26 21:10:50 2025 -- 1 IP address (1 host up) scanned in 2.87 seconds

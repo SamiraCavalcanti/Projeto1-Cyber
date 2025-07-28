@@ -1,0 +1,15 @@
+# Nmap 7.95 scan initiated Sat Jul 26 21:17:02 2025 as: /usr/lib/nmap/nmap -sS -sV -O -p- --script=default -oN infra_10.10.30.10.txt 10.10.30.10
+Nmap scan report for ftp-server.projeto_final_opcao_1_infra_net (10.10.30.10)
+Host is up (0.000060s latency).
+Not shown: 65534 closed tcp ports (reset)
+PORT   STATE SERVICE VERSION
+21/tcp open  ftp     Pure-FTPd
+MAC Address: A6:C3:3A:E0:1F:E0 (Unknown)
+Device type: general purpose|router
+Running: Linux 4.X|5.X, MikroTik RouterOS 7.X
+OS CPE: cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5 cpe:/o:mikrotik:routeros:7 cpe:/o:linux:linux_kernel:5.6.3
+OS details: Linux 4.15 - 5.19, OpenWrt 21.02 (Linux 5.4), MikroTik RouterOS 7.2 - 7.5 (Linux 5.6.3)
+Network Distance: 1 hop
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Sat Jul 26 21:17:05 2025 -- 1 IP address (1 host up) scanned in 2.81 seconds

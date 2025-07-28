@@ -1,0 +1,24 @@
+# Nmap 7.95 scan initiated Sat Jul 26 21:17:14 2025 as: /usr/lib/nmap/nmap -sS -sV -O -p- --script=default -oN infra_10.10.30.15.txt 10.10.30.15
+Nmap scan report for samba-server.projeto_final_opcao_1_infra_net (10.10.30.15)
+Host is up (0.000056s latency).
+Not shown: 65533 closed tcp ports (reset)
+PORT    STATE SERVICE     VERSION
+139/tcp open  netbios-ssn Samba smbd 4
+445/tcp open  netbios-ssn Samba smbd 4
+MAC Address: 56:ED:55:58:65:35 (Unknown)
+Device type: general purpose
+Running: Linux 4.X|5.X
+OS CPE: cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5
+OS details: Linux 4.15 - 5.19
+Network Distance: 1 hop
+
+Host script results:
+| smb2-time: 
+|   date: 2025-07-26T21:17:29
+|_  start_date: N/A
+| smb2-security-mode: 
+|   3:1:1: 
+|_    Message signing enabled but not required
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Sat Jul 26 21:17:33 2025 -- 1 IP address (1 host up) scanned in 18.83 seconds
