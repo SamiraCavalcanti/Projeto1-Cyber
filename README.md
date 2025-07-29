@@ -52,7 +52,7 @@ Este laboratório simula uma **rede corporativa real** com múltiplos segmentos 
 
 <div align="center">
 
-![Topologia da Rede de Auditoria](topologia_rede_auditoria.png)
+![Topologia da Rede de Auditoria](./topologia_rede_auditoria.png)
 
 *Diagrama atualizado da infraestrutura de rede segmentada - 20 dispositivos mapeados*
 
