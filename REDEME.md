@@ -2,8 +2,15 @@
 
 <div align="center">
 
-![Security Audit](https://img.shields.io/badge/Security-Audit-critical?style=for-the-badge&logo=security&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Security Audit](https://img.shields.io/badge/Security-Audit-critical?style=for-the-badge&logo=security&logoColor=white| S| Severidade | Dispositivo | Serviço | Vulnerabilidade | CVSS |
+|------------|-------------|---------|-----------------|------|
+| 🔴 **CRÍTICO** | 10.10.30.117 | Zabbix | Credenciais Padrão (Admin/zabbix) | 9.8 |
+| 🟡 **MÉDIO** | 10.10.30.10 | FTP | Erro de Configuração (puredb file) + Serviço Exposto | 5.3 |
+| 🔴 **CRÍTICO** | 10.10.30.11 | MySQL | Acesso Root Universal (%) + 88 Privilégios Admin + Grant Option | 9.8 |dade | Dispositivo | Serviço | Vulnerabilidade | CVSS |
+|------------|-------------|---------|-----------------|------|
+| 🔴 **CRÍTICO** | 10.10.30.117 | Zabbix | Credenciais Padrão (Admin/zabbix) | 9.8 |
+| 🟡 **MÉDIO** | 10.10.30.10 | FTP | Erro de Configuração (puredb file) + Serviço Exposto | 5.3 |
+| 🔴 **CRÍTICO** | 10.10.30.11 | MySQL | Acesso Root Universal (%) + 88 Privilégios Admin + Grant Option | 9.8 |ocker](https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![Network](https://img.shields.io/badge/Network-Analysis-4CAF50?style=for-the-badge&logo=cisco&logoColor=white)
 
 **Laboratório prático de auditoria de segurança em rede corporativa segmentada**
