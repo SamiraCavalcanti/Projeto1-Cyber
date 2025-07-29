@@ -236,7 +236,7 @@ nmap --script=http-default-accounts 10.10.30.117
 | Severidade | Dispositivo | Serviço | Vulnerabilidade | CVSS |
 |------------|-------------|---------|-----------------|------|
 | 🔴 **CRÍTICO** | 10.10.30.117 | Zabbix 4.4.6 | Credenciais Padrão (Admin/zabbix) + Interface Web Exposta | 9.8 |
-| � **MÉDIO** | 10.10.30.10 | Pure-FTPd | Erro de Configuração (puredb file) + Serviço Exposto | 5.3 |
+| 🔴 **MÉDIO** | 10.10.30.10 | Pure-FTPd | Erro de Configuração (puredb file) + Serviço Exposto | 5.3 |
 | 🔴 **CRÍTICO** | 10.10.30.11 | MySQL 8.0.42 | Acesso Root Universal (%) + 88 Privilégios Admin + Grant Option | 9.8 |
 
 ### 📈 Estatísticas de Segurança
