@@ -571,13 +571,14 @@
                 <p style="text-align: center; margin-bottom: 20px;">As seguintes ações irão resolver <strong>80% dos riscos</strong> identificados:</p>
                 
                 <div class="priority-item">
-                    <strong>🎯 PRIORIDADE 1</strong> - Alterar senhas padrão do Zabbix (Impacto: CRÍTICO)
+                    <strong>🚨 PRIORIDADE 1</strong> - <span style="color: #ff0000; font-weight: bold;">ALTERAR SENHA ROOT MYSQL IMEDIATAMENTE</span> (Impacto: CRÍTICO - ACESSO TOTAL AO BANCO)
                 </div>
                 <div class="priority-item">
-                    <strong>🎯 PRIORIDADE 2</strong> - Desabilitar acesso anônimo no FTP (Impacto: CRÍTICO)
+                    <strong>🎯 PRIORIDADE 2</strong> - Alterar senhas padrão do Zabbix (Impacto: CRÍTICO)
                 </div>
                 <div class="priority-item">
-                    <strong>🎯 PRIORIDADE 3</strong> - Implementar autenticação em serviços LDAP/SMB (Impacto: ALTO)
+                    <strong>🎯 PRIORIDADE 3</strong> - Corrigir configuração FTP puredb (Impacto: MÉDIO)
+                </div>
                 </div>
                 <div class="priority-item">
                     <strong>🎯 PRIORIDADE 4</strong> - Isolar rede de infraestrutura (Impacto: ALTO)
@@ -896,7 +897,7 @@
             <h3>4.1 Vulnerabilidades Críticas Identificadas</h3>
             
             <div class="vulnerability critical">
-                <h4>🔴 CRÍTICO #1: Zabbix com Credenciais Padrão</h4>
+                <h4>🔴 CRÍTICO #2: Zabbix com Credenciais Padrão</h4>
                 <div class="details">
                     <div class="detail-item">
                         <strong>Localização:</strong> 10.10.30.117 (zabbix-server)
@@ -910,14 +911,14 @@
                 <p><strong>Exploração:</strong> Credenciais Admin/zabbix permitem controle total</p>
             </div>
 
-            <div class="vulnerability critical">
-                <h4>🔴 CRÍTICO #2: Servidor FTP com Acesso Anônimo</h4>
+            <div class="vulnerability high">
+                <h4>� MÉDIO #1: Servidor FTP com Erro de Configuração</h4>
                 <div class="details">
                     <div class="detail-item">
                         <strong>Localização:</strong> 10.10.30.10 (ftp-server)
                     </div>
                     <div class="detail-item">
-                        <strong>CVSS Score:</strong> 8.6 (ALTO)
+                        <strong>CVSS Score:</strong> 5.3 (MÉDIO)
                     </div>
                     <div class="detail-item">
                         <strong>Serviço:</strong> Pure-FTPd
@@ -926,24 +927,25 @@
                         <strong>OS Detected:</strong> Linux 4.15 - 5.19
                     </div>
                 </div>
-                <p><strong>Descrição:</strong> Servidor FTP configurado para permitir login anônimo sem senha</p>
-                <p><strong>Impacto:</strong> Acesso não autorizado a arquivos, possível upload de malware, exfiltração de dados</p>
+                <p><strong>Descrição:</strong> Servidor FTP com erro de configuração do arquivo puredb, mas acesso anônimo corretamente desabilitado</p>
+                <p><strong>Impacto:</strong> Negação de serviço, serviço indisponível para usuários legítimos</p>
                 <div class="code-block">
 ftp anonymous@10.10.30.10
-# Username: anonymous
-# Password: (em branco)
-# Result: Acesso total ao sistema de arquivos FTP
+# 220-This is a private system - No anonymous login
+# 331 User anonymous OK. Password required
+# 421 Unable to read the indexed puredb file (or old format detected)
+# Result: Anonymous login NEGADO (configuração segura), mas erro de configuração
                 </div>
             </div>
 
             <div class="vulnerability critical">
-                <h4>🔴 CRÍTICO #3: MySQL Exposto Sem Proteção Adequada</h4>
+                <h4>🔴 CRÍTICO #1: MySQL com Acesso Root Sem Senha</h4>
                 <div class="details">
                     <div class="detail-item">
                         <strong>Localização:</strong> 10.10.30.11 (mysql-server)
                     </div>
                     <div class="detail-item">
-                        <strong>CVSS Score:</strong> 8.1 (ALTO)
+                        <strong>CVSS Score:</strong> 9.8 (CRÍTICO)
                     </div>
                     <div class="detail-item">
                         <strong>Versão:</strong> MySQL 8.0.42
@@ -951,14 +953,42 @@ ftp anonymous@10.10.30.10
                     <div class="detail-item">
                         <strong>Portas:</strong> 3306, 33060
                     </div>
+                    <div class="detail-item">
+                        <strong>Status:</strong> ✅ CONFIRMADO EM TESTE REAL
+                    </div>
                 </div>
-                <p><strong>Descrição:</strong> Servidor MySQL exposto na rede com SSL auto-gerado e múltiplas portas ativas</p>
-                <p><strong>Impacto:</strong> Potencial acesso a bases de dados corporativas, vazamento de informações sensíveis</p>
-                <p><strong>Vulnerabilidades Identificadas:</strong></p>
+                <p><strong>Descrição:</strong> <span style="color: #ff0000; font-weight: bold;">Acesso root confirmado com senha padrão 'root' - Acesso total ao banco de dados!</span></p>
+                <p><strong>Evidência de Teste:</strong></p>
+                <div style="background: #1a1a1a; color: #00ff00; padding: 10px; font-family: monospace; margin: 10px 0; border-radius: 5px;">
+$ mysql -h 10.10.30.11 -u root -p<br>
+Enter password: root<br>
+<span style="color: #ffff00;">Welcome to the MySQL monitor. Commands end with ; or \g.</span><br>
+mysql> SELECT user,host FROM mysql.user;<br>
++------------------+-----------+<br>
+| user             | host      |<br>
++------------------+-----------+<br>
+| root             | %         |<br>
+| mysql.infoschema | localhost |<br>
+| mysql.session    | localhost |<br>
+| mysql.sys        | localhost |<br>
+| root             | localhost |<br>
++------------------+-----------+<br>
+<span style="color: #ff0000;">5 rows in set (0.00 sec)</span>
+                </div>
+                <p><strong>Impacto:</strong> <span style="color: #ff0000; font-weight: bold;">ACESSO TOTAL AO BANCO DE DADOS</span> - Leitura, escrita, modificação e exclusão de todos os dados corporativos</p>
+                <p><strong>Vulnerabilidades Confirmadas:</strong></p>
                 <ul>
-                    <li>Servidor exposto na rede sem firewall</li>
-                    <li>SSL certificate auto-gerado (baixa confiança)</li>
+                    <li><span style="color: #ff0000;">🔥 Root com senha padrão 'root'</span></li>
+                    <li><span style="color: #ff0000;">🔥 Root habilitado para qualquer host ('%')</span></li>
+                    <li><span style="color: #ff0000;">🔥 Acesso remoto sem restrições</span></li>
                     <li>Protocolo X habilitado (33060) - superfície de ataque ampliada</li>
+                </ul>
+                <p><strong>Recomendação URGENTE:</strong></p>
+                <ul style="color: #ff0000; font-weight: bold;">
+                    <li>Alterar senha do root IMEDIATAMENTE</li>
+                    <li>Restringir acesso root apenas para localhost</li>
+                    <li>Implementar firewall para porta 3306</li>
+                    <li>Criar usuários específicos com privilégios limitados</li>
                 </ul>
             </div>
 
@@ -1024,11 +1054,11 @@ ftp anonymous@10.10.30.10
                         <td>🎯 P1</td>
                     </tr>
                     <tr>
-                        <td>MySQL Exposto</td>
-                        <td>ALTO</td>
-                        <td>MÉDIA</td>
-                        <td><span class="risk-high">ALTO</span></td>
-                        <td>🎯 P2</td>
+                        <td>MySQL Root Sem Senha</td>
+                        <td>CRÍTICO</td>
+                        <td>ALTA</td>
+                        <td><span class="risk-critical">CRÍTICO</span></td>
+                        <td>🚨 P1</td>
                     </tr>
                     <tr>
                         <td>LDAP Sem Auth</td>
@@ -1086,7 +1116,28 @@ ftp anonymous@10.10.30.10
             <h3>6.1 Ações Imediatas (0-7 dias)</h3>
             
             <div class="vulnerability critical">
-                <h4>🎯 PRIORIDADE 1: Zabbix Server</h4>
+                <h4>🚨 PRIORIDADE 1: MySQL Server (URGENTE)</h4>
+                <p><strong>Problema:</strong> <span style="color: #ff0000; font-weight: bold;">Root com senha padrão 'root' - ACESSO TOTAL AO BANCO!</span></p>
+                <p><strong>Solução IMEDIATA:</strong></p>
+                <ol style="color: #ff0000; font-weight: bold;">
+                    <li>ALTERAR SENHA DO ROOT AGORA MESMO</li>
+                    <li>Restringir acesso root apenas para localhost</li>
+                    <li>Criar usuários específicos com privilégios limitados</li>
+                    <li>Implementar firewall para porta 3306</li>
+                    <li>Habilitar log de auditoria MySQL</li>
+                </ol>
+                <div class="code-block">
+# COMANDOS URGENTES:
+mysql -h 10.10.30.11 -u root -p
+> ALTER USER 'root'@'%' IDENTIFIED BY 'NOVA_SENHA_FORTE_123!@#';
+> DELETE FROM mysql.user WHERE User='root' AND Host='%';
+> CREATE USER 'admin'@'localhost' IDENTIFIED BY 'SENHA_FORTE_456!@#';
+> FLUSH PRIVILEGES;
+                </div>
+            </div>
+
+            <div class="vulnerability critical">
+                <h4>🎯 PRIORIDADE 2: Zabbix Server</h4>
                 <p><strong>Problema:</strong> Credenciais padrão Admin/zabbix</p>
                 <p><strong>Solução:</strong></p>
                 <ol>
@@ -1102,7 +1153,7 @@ ftp anonymous@10.10.30.10
             </div>
 
             <div class="vulnerability critical">
-                <h4>🎯 PRIORIDADE 2: Servidor FTP</h4>
+                <h4>🎯 PRIORIDADE 3: Servidor FTP</h4>
                 <p><strong>Problema:</strong> Acesso anônimo habilitado</p>
                 <p><strong>Solução:</strong></p>
                 <ol>

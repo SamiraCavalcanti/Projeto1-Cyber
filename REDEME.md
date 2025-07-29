@@ -195,19 +195,19 @@ nmap --script=http-default-accounts 10.10.30.117
 | Severidade | Dispositivo | Serviço | Vulnerabilidade | CVSS |
 |------------|-------------|---------|-----------------|------|
 | 🔴 **CRÍTICO** | 10.10.30.117 | Zabbix | Credenciais Padrão (Admin/zabbix) | 9.8 |
-| 🔴 **CRÍTICO** | 10.10.30.10 | FTP | Acesso Anônimo Habilitado | 8.6 |
-| 🔴 **CRÍTICO** | 10.10.30.11 | MySQL | Credenciais Padrão (root/root) + Acesso Remoto | 9.0 |
+| � **MÉDIO** | 10.10.30.10 | FTP | Erro de Configuração (puredb file) + Serviço Exposto | 5.3 |
+| 🔴 **CRÍTICO** | 10.10.30.11 | MySQL | Acesso Root Universal (%) + 88 Privilégios Admin + Grant Option | 9.8 |
 
 ### 📈 Estatísticas de Segurança
 
 ```
 Total de Dispositivos: 17
-├── Vulnerabilidades Críticas: 3 (🔴 17.6%)
-├── Vulnerabilidades Altas: 4 (🟡 23.5%) 
-├── Vulnerabilidades Médias: 7 (🟠 41.2%)
-└── Dispositivos Seguros: 3 (🟢 17.7%)
+├── Vulnerabilidades Críticas: 2 (🔴 11.8%)
+├── Vulnerabilidades Altas: 3 (🟡 17.6%) 
+├── Vulnerabilidades Médias: 8 (🟠 47.1%)
+└── Dispositivos Seguros: 4 (🟢 23.5%)
 
-Recomendação: AÇÃO IMEDIATA NECESSÁRIA
+Recomendação: AÇÃO IMEDIATA NECESSÁRIA para vulnerabilidades críticas
 ```
 
 ---
@@ -294,39 +294,77 @@ curl http://10.10.30.117
 
 #### 2. FTP Server (10.10.30.10)  
 ```bash
-# Teste de acesso anônimo
-ftp 10.10.30.10
-# Username: anonymous
-# Password: (vazio)
+# Teste de conectividade
+ftp anonymous@10.10.30.10
+
+# RESULTADO OBTIDO:
+# 220-This is a private system - No anonymous login
+# 331 User anonymous OK. Password required
+# 421 Unable to read the indexed puredb file (or old format detected)
+
+# VULNERABILIDADE IDENTIFICADA:
+# - Erro de configuração do Pure-FTPd
+# - Arquivo puredb corrompido ou formato inválido
+# - Serviço exposto mas mal configurado
+# - Possível negação de serviço
+
+# CLASSIFICAÇÃO: MÉDIO (5.3 CVSS)
+# - Não há acesso anônimo (configuração correta)
+# - Mas há problema de configuração que afeta disponibilidade
 ```
 
 #### 3. MySQL Server (10.10.30.11)
 ```bash
-# Enumeração de versão
-nmap -sV -p 3306,33060 10.10.30.11
-
 # VULNERABILIDADE CRÍTICA CONFIRMADA
 mysql -h 10.10.30.11 -u root -p --ssl=0
 # Password: root (CREDENCIAIS PADRÃO)
-# Result: Acesso completo ao servidor MySQL
 
-# Bases de dados expostas:
-# - information_schema
-# - mysql  
-# - performance_schema
-# - sys
+# ANÁLISE DE USUÁRIOS E PRIVILÉGIOS:
+# root@% = ACESSO UNIVERSAL (qualquer IP)
+# root@localhost = Acesso local total
+# 88 privilégios globais incluindo:
+#   - SYSTEM_USER, SYSTEM_VARIABLES_ADMIN
+#   - AUDIT_ADMIN, BACKUP_ADMIN  
+#   - ENCRYPTION_KEY_ADMIN, ROLE_ADMIN
+#   - WITH_GRANT_OPTION = Y (pode criar superusuários)
+
+# Bases de dados expostas descobertas:
+# - information_schema (metadados do sistema)
+# - mysql (configurações e usuários)  
+# - performance_schema (métricas de performance)
+# - sys (utilitários de sistema)
+
+# FALHAS DE SEGURANÇA CRÍTICAS CONFIRMADAS:
+# 1. Sem política de senhas (validate_password = DESABILITADO)
+# 2. SSL contornável (--ssl=0 funciona)
+# 3. FIPS mode OFF (criptografia insegura)
+# 4. Acesso root remoto de QUALQUER IP (Host = %)
+# 5. Privilégios administrativos TOTAIS
+# 6. Capacidade de criar outros superusuários
 ```
 
 ### 🛡️ Recomendações de Mitigação
 
-1. **Imediato (0-7 dias)**:
+1. **🚨 AÇÃO EMERGENCIAL (0-24 horas)**:
+   - **CRÍTICO**: Alterar senha root do MySQL imediatamente
+   - **CRÍTICO**: Remover acesso root universal (Host = %)
+   - **CRÍTICO**: Revogar privilégios WITH_GRANT_OPTION
+   - **CRÍTICO**: Isolar servidor MySQL na rede (firewall)
+   
+2. **Imediato (1-7 dias)**:
    - Alterar senhas padrão do Zabbix
-   - Desabilitar acesso anônimo FTP
+   - **MySQL**: Criar usuários específicos com privilégios mínimos
+   - **MySQL**: Habilitar política de senhas obrigatória
+   - **MySQL**: Forçar uso exclusivo de SSL/TLS
+   - **FTP**: Corrigir configuração do puredb (pure-pw mkdb)
+   - **FTP**: Revisar configuração do Pure-FTPd
    - Configurar firewall para infra_net
 
-2. **Médio Prazo (1-4 semanas)**:
+3. **Médio Prazo (1-4 semanas)**:
+   - **MySQL**: Habilitar FIPS mode para criptografia segura
+   - **MySQL**: Implementar auditoria de comandos SQL
+   - **MySQL**: Configurar rate limiting para conexões
    - Implementar autenticação em LDAP/SMB
-   - Hardening de serviços MySQL
    - Segmentação efetiva de rede
 
 3. **Longo Prazo (1-3 meses)**:
