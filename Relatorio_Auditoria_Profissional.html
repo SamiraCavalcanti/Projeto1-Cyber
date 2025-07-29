@@ -198,13 +198,20 @@
         }
 
         /* Tables */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
         .data-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
+            margin: 0;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             border-radius: 8px;
             overflow: hidden;
+            table-layout: fixed;
+            min-width: 600px;
         }
 
         .data-table th {
@@ -218,6 +225,8 @@
         .data-table td {
             padding: 12px 15px;
             border-bottom: 1px solid #dee2e6;
+            word-wrap: break-word;
+            max-width: 0;
         }
 
         .data-table tbody tr:hover {
@@ -592,6 +601,7 @@
             </ul>
 
             <h3>Escopo da Análise</h3>
+            <div class="table-wrapper">
             <table class="data-table">
                 <tr>
                     <th>Aspecto</th>
@@ -614,6 +624,7 @@
                     <td>Análise limitada a descoberta e enumeração passiva</td>
                 </tr>
             </table>
+            </div>
         </div>
 
         <!-- Section 2: Network Architecture -->
@@ -621,6 +632,7 @@
             <h2>2. ARQUITETURA DE REDE DESCOBERTA</h2>
             
             <h3>Segmentação Identificada</h3>
+            <div class="table-wrapper">
             <table class="data-table">
                 <thead>
                     <tr>
@@ -655,6 +667,7 @@
                     </tr>
                 </tbody>
             </table>
+            </div>
 
             <h3>Conectividade Entre Redes</h3>
             <ul>
@@ -682,6 +695,7 @@
             <h2>3. INVENTÁRIO DE ATIVOS</h2>
             
             <h3>3.1 Rede Corporativa (corp_net - 10.10.10.0/24)</h3>
+            <div class="table-wrapper">
             <table class="data-table">
                 <thead>
                     <tr>
@@ -737,8 +751,10 @@
                     </tr>
                 </tbody>
             </table>
+            </div>
 
             <h3>3.2 Rede de Visitantes (guest_net - 10.10.50.0/24)</h3>
+            <div class="table-wrapper">
             <table class="data-table">
                 <thead>
                     <tr>
@@ -794,8 +810,10 @@
                     </tr>
                 </tbody>
             </table>
+            </div>
 
             <h3>3.3 Rede de Infraestrutura (infra_net - 10.10.30.0/24)</h3>
+            <div class="table-wrapper">
             <table class="data-table">
                 <thead>
                     <tr>
@@ -874,6 +892,7 @@
                     </tr>
                 </tbody>
             </table>
+            </div>
             
             <div class="classification">
                 ⚠️ ALERTA CRÍTICO: Esta rede contém 2 vulnerabilidades de risco CRÍTICO que permitem comprometimento total da infraestrutura.
@@ -1021,6 +1040,7 @@ mysql> SELECT user,host FROM mysql.user;<br>
             <h2>5. MATRIZ DE RISCOS</h2>
             
             <h3>Classificação por Impacto x Probabilidade</h3>
+            <div class="table-wrapper">
             <table class="data-table">
                 <thead>
                     <tr>
@@ -1076,6 +1096,7 @@ mysql> SELECT user,host FROM mysql.user;<br>
                     </tr>
                 </tbody>
             </table>
+            </div>
 
             <h3>Distribuição de Riscos</h3>
             <div class="risk-matrix">
@@ -1245,6 +1266,7 @@ chroot_local_user=YES
             </div>
 
             <h3>Recursos Necessários</h3>
+            <div class="table-wrapper">
             <table class="data-table">
                 <tr>
                     <th>Recurso</th>
@@ -1267,6 +1289,7 @@ chroot_local_user=YES
                     <td>8h para equipe em hardening</td>
                 </tr>
             </table>
+            </div>
 
             <h3>Métricas de Sucesso</h3>
             <ul>
