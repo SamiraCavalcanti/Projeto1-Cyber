@@ -420,7 +420,7 @@ Relatórios Gerados: 4 formatos diferentes
 
 ## 📜 Licença
 
-Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](LICENSE) para detalhes.
+Este projeto está licenciado sob a **MIT License** .
 
 ### ⚖️ Uso Educacional
 
