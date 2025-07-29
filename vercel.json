@@ -1,38 +1,8 @@
 {
-  "builds": [
+  "rewrites": [
     {
-      "src": "*.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "*.png",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "*.jpg",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "*.jpeg",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "*.gif",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "*.svg",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/",
-      "dest": "/Relatorio_Auditoria_Profissional.html"
-    },
-    {
-      "src": "/(.*\\.(png|jpg|jpeg|gif|svg|ico))",
-      "dest": "/$1"
+      "source": "/",
+      "destination": "/Relatorio_Auditoria_Profissional.html"
     }
   ],
   "headers": [
