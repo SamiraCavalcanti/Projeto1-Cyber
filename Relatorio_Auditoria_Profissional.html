@@ -445,26 +445,6 @@
             }
         }
 
-        /* Print Styles */
-        @media print {
-            body {
-                background: white;
-            }
-            
-            .container {
-                box-shadow: none;
-                max-width: none;
-            }
-            
-            .header {
-                background: #333 !important;
-            }
-            
-            .section {
-                break-inside: avoid;
-            }
-        }
-
         /* Animations */
         .section {
             animation: fadeInUp 0.6s ease-out;
@@ -537,7 +517,7 @@
             <h2>SUMÁRIO EXECUTIVO</h2>
             
             <h3>Visão Geral da Análise</h3>
-            <p>Durante a auditoria de segurança da infraestrutura de rede corporativa, foram identificadas <strong>vulnerabilidades críticas</strong> que expõem a organização a riscos significativos de comprometimento. A análise revelou 17 dispositivos ativos distribuídos em 3 segmentos de rede, com múltiplas falhas de segurança que requerem ação imediata.</p>
+            <p>Durante a auditoria de segurança da infraestrutura de rede corporativa, foram identificadas <strong>vulnerabilidades críticas</strong> que expõem a organização a riscos significativos de comprometimento. A análise revelou 20 dispositivos ativos distribuídos em 3 segmentos de rede, com múltiplas falhas de segurança que requerem ação imediata.</p>
 
             <div class="findings-grid">
                 <div class="finding-card">
@@ -546,7 +526,7 @@
                 </div>
                 <div class="finding-card">
                     <h4>🔴 CRÍTICO</h4>
-                    <p>Sistema de monitoramento Zabbix acessível com <strong>senha padrão</strong></p>
+                    <p>Sistema de monitoramento Zabbix 4.4.6 acessível com <strong>senha padrão</strong></p>
                 </div>
                 <div class="finding-card">
                     <h4>🟡 MÉDIO</h4>
@@ -574,7 +554,7 @@
                     <strong>🚨 PRIORIDADE 1</strong> - <span style="color: #ff0000; font-weight: bold;">ALTERAR SENHA ROOT MYSQL IMEDIATAMENTE</span> (Impacto: CRÍTICO - ACESSO TOTAL AO BANCO)
                 </div>
                 <div class="priority-item">
-                    <strong>🎯 PRIORIDADE 2</strong> - Alterar senhas padrão do Zabbix (Impacto: CRÍTICO)
+                    <strong>🎯 PRIORIDADE 2</strong> - Alterar senhas padrão do Zabbix 4.4.6 (Impacto: CRÍTICO)
                 </div>
                 <div class="priority-item">
                     <strong>🎯 PRIORIDADE 3</strong> - Corrigir configuração FTP puredb (Impacto: MÉDIO)
@@ -688,7 +668,10 @@
                 <img src="topologia_rede_auditoria.png" alt="Diagrama de Topologia de Rede - Auditoria de Segurança" 
                      style="max-width: 100%; height: auto; border: 2px solid #dee2e6; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
                 <p style="margin-top: 15px; font-style: italic; color: #6c757d;">
-                    <strong>Figura 1:</strong> PNG de alta resolução (300 DPI) mostrando a topologia completa da rede com classificação de riscos por cores e todos os 17 dispositivos mapeados.
+                    <strong>Figura 1:</strong> Topologia completa da rede corporativa com 20 dispositivos mapeados distribuídos em 3 segmentos:
+                    <br>• CORP_NET (6 dispositivos) - Rede corporativa com workstations
+                    <br>• GUEST_NET (6 dispositivos) - Rede de visitantes adequadamente isolada  
+                    <br>• INFRA_NET (8 dispositivos) - <span style="color: #dc3545; font-weight: bold;">Infraestrutura CRÍTICA com 2 vulnerabilidades de alto risco</span>
                 </p>
             </div>
         </div>
@@ -788,6 +771,13 @@
                         <td><span class="risk-low">✅ BAIXO</span></td>
                     </tr>
                     <tr>
+                        <td>10.10.50.4</td>
+                        <td>dispositivo-guest</td>
+                        <td>Dispositivo Pessoal</td>
+                        <td>Porta dinâmica (53390)</td>
+                        <td><span class="risk-low">✅ BAIXO</span></td>
+                    </tr>
+                    <tr>
                         <td>10.10.50.5</td>
                         <td>notebook-carlos</td>
                         <td>Dispositivo Pessoal</td>
@@ -870,7 +860,7 @@
                         <td><strong>zabbix-server</strong></td>
                         <td><strong>Monitoramento</strong></td>
                         <td><strong>HTTP (80), Zabbix (10051, 10052)</strong></td>
-                        <td><strong>nginx + Zabbix</strong></td>
+                        <td><strong>nginx + Zabbix 4.4.6</strong></td>
                         <td><span class="risk-critical">🔴 CRÍTICO</span></td>
                     </tr>
                     <tr>
@@ -885,7 +875,7 @@
             </table>
             
             <div class="classification">
-                ⚠️ ALERTA CRÍTICO: Esta rede contém 3 vulnerabilidades de risco CRÍTICO que permitem comprometimento total da infraestrutura.
+                ⚠️ ALERTA CRÍTICO: Esta rede contém 2 vulnerabilidades de risco CRÍTICO que permitem comprometimento total da infraestrutura.
             </div>
         </div>
 
@@ -896,7 +886,7 @@
             <h3>4.1 Vulnerabilidades Críticas Identificadas</h3>
             
             <div class="vulnerability critical">
-                <h4>🔴 CRÍTICO #2: Zabbix com Credenciais Padrão</h4>
+                <h4>🔴 CRÍTICO #2: Zabbix 4.4.6 com Credenciais Padrão</h4>
                 <div class="details">
                     <div class="detail-item">
                         <strong>Localização:</strong> 10.10.30.117 (zabbix-server)
@@ -904,14 +894,17 @@
                     <div class="detail-item">
                         <strong>CVSS Score:</strong> 9.8 (CRÍTICO)
                     </div>
+                    <div class="detail-item">
+                        <strong>Versão:</strong> Zabbix 4.4.6 (2001–2020)
+                    </div>
                 </div>
-                <p><strong>Descrição:</strong> Sistema de monitoramento Zabbix acessível via web com credenciais padrão</p>
+                <p><strong>Descrição:</strong> Sistema de monitoramento Zabbix 4.4.6 acessível via web com credenciais padrão</p>
                 <p><strong>Impacto:</strong> Acesso total ao monitoramento da infraestrutura, visibilidade completa da rede</p>
                 <p><strong>Exploração:</strong> Credenciais Admin/zabbix permitem controle total</p>
             </div>
 
             <div class="vulnerability high">
-                <h4>� MÉDIO #1: Servidor FTP com Erro de Configuração</h4>
+                <h4>🟡 MÉDIO #1: Servidor FTP com Erro de Configuração</h4>
                 <div class="details">
                     <div class="detail-item">
                         <strong>Localização:</strong> 10.10.30.10 (ftp-server)
@@ -1039,7 +1032,7 @@ mysql> SELECT user,host FROM mysql.user;<br>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Zabbix - Senha Padrão</td>
+                        <td>Zabbix 4.4.6 - Senha Padrão</td>
                         <td>CRÍTICO</td>
                         <td>ALTA</td>
                         <td><span class="risk-critical">CRÍTICO</span></td>
@@ -1136,8 +1129,8 @@ mysql -h 10.10.30.11 -u root -p
             </div>
 
             <div class="vulnerability critical">
-                <h4>🎯 PRIORIDADE 2: Zabbix Server</h4>
-                <p><strong>Problema:</strong> Credenciais padrão Admin/zabbix</p>
+                <h4>🎯 PRIORIDADE 2: Zabbix 4.4.6 Server</h4>
+                <p><strong>Problema:</strong> Credenciais padrão Admin/zabbix na versão 4.4.6</p>
                 <p><strong>Solução:</strong></p>
                 <ol>
                     <li>Alterar senha do usuário Admin imediatamente</li>
@@ -1214,7 +1207,7 @@ chroot_local_user=YES
                     <div class="timeline-item">
                         <h4>Semana 1</h4>
                         <ul>
-                            <li>Alterar senhas Zabbix</li>
+                            <li>Alterar senhas Zabbix 4.4.6</li>
                             <li>Desabilitar FTP anônimo</li>
                         </ul>
                         <p><strong>Responsável:</strong> Admin de Sistemas</p>

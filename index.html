@@ -27,7 +27,7 @@
             border-radius: 20px;
             padding: 40px;
             text-align: center;
-            max-width: 600px;
+            max-width: 800px;
             margin: 20px;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
@@ -121,6 +121,94 @@
                 padding: 20px;
             }
         }
+
+        /* Regras específicas para impressão */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+                font-size: 12pt;
+                line-height: 1.4;
+            }
+            
+            .container {
+                background: white !important;
+                border: none !important;
+                box-shadow: none !important;
+                backdrop-filter: none !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 20px !important;
+            }
+            
+            h1 {
+                color: black !important;
+                text-shadow: none !important;
+                font-size: 24pt !important;
+                page-break-after: avoid;
+            }
+            
+            h2 {
+                color: black !important;
+                font-size: 18pt !important;
+            }
+            
+            h3 {
+                color: black !important;
+                page-break-after: avoid;
+            }
+            
+            .stats {
+                page-break-inside: avoid;
+                display: block !important;
+            }
+            
+            .stat {
+                display: inline-block;
+                margin: 10px 20px;
+                page-break-inside: avoid;
+            }
+            
+            .stat-number {
+                color: black !important;
+                font-size: 18pt !important;
+            }
+            
+            .features {
+                display: block !important;
+                page-break-inside: avoid;
+            }
+            
+            .feature {
+                background: white !important;
+                border: 1px solid #ccc !important;
+                margin-bottom: 15px;
+                page-break-inside: avoid;
+            }
+            
+            .feature h3 {
+                color: black !important;
+            }
+            
+            .btn {
+                background: #333 !important;
+                color: white !important;
+                display: inline-block !important;
+                text-decoration: none !important;
+                padding: 10px 20px !important;
+                border: 1px solid #333 !important;
+            }
+            
+            .description {
+                page-break-inside: avoid;
+                color: black !important;
+            }
+            
+            /* Evitar quebras desnecessárias */
+            .container > * {
+                page-break-inside: avoid;
+            }
+        }
     </style>
 </head>
 <body>
@@ -134,11 +222,11 @@
 
         <div class="stats">
             <div class="stat">
-                <div class="stat-number">17</div>
+                <div class="stat-number">20</div>
                 <div class="stat-label">Dispositivos Analisados</div>
             </div>
             <div class="stat">
-                <div class="stat-number">3</div>
+                <div class="stat-number">2</div>
                 <div class="stat-label">Vulnerabilidades Críticas</div>
             </div>
             <div class="stat">
@@ -154,7 +242,7 @@
             </div>
             <div class="feature">
                 <h3>🔍 Análise de Vulnerabilidades</h3>
-                <p>Detecção de falhas críticas incluindo Zabbix com senha padrão e FTP anônimo</p>
+                <p>Detecção de falhas críticas: MySQL 8.0.42 (root/root) e Zabbix 4.4.6 (Admin/zabbix)</p>
             </div>
             <div class="feature">
                 <h3>📊 Relatório Profissional</h3>

@@ -54,7 +54,7 @@ Este laboratório simula uma **rede corporativa real** com múltiplos segmentos 
 
 ![Topologia da Rede de Auditoria](topologia_rede_auditoria.png)
 
-*Diagrama completo da infraestrutura de rede segmentada para auditoria de segurança*
+*Diagrama atualizado da infraestrutura de rede segmentada - 20 dispositivos mapeados*
 
 </div>
 
@@ -71,9 +71,9 @@ A topologia acima apresenta a estrutura completa do laboratório, com três rede
 │  │   CORP_NET      │  │   GUEST_NET     │  │  INFRA_NET   │ │
 │  │ 10.10.10.0/24   │  │ 10.10.50.0/24   │  │10.10.30.0/24 │ │
 │  │                 │  │                 │  │              │ │
-│  │ • 4 Workstations│  │ • 4 Dispositivos│  │ • 6 Servidores│ │
-│  │ • 1 Gateway     │  │   Pessoais      │  │ • 1 Gateway   │ │
-│  │                 │  │ • 1 Gateway     │  │              │ │
+│  │ • 6 Dispositivos│  │ • 6 Dispositivos│  │ • 8 Servidores│ │
+│  │   (5 WS + 1 GW) │  │   (5 Pessoais + │  │   Críticos    │ │
+│  │                 │  │    1 Gateway)   │  │ • 2 CRÍTICOS  │ │
 │  └─────────────────┘  └─────────────────┘  └──────────────┘ │
 │          ▲                      ▲                    ▲      │
 │          │                      │                    │      │
@@ -83,8 +83,13 @@ A topologia acima apresenta a estrutura completa do laboratório, com três rede
 │                    │    ANALYST      │                      │
 │                    │  Máquina de     │                      │
 │                    │   Auditoria     │                      │
+│                    │ (10.10.X.2)     │                      │
 │                    └─────────────────┘                      │
 └─────────────────────────────────────────────────────────────┘
+
+🔴 ATENÇÃO: INFRA_NET possui 2 vulnerabilidades CRÍTICAS confirmadas!
+- MySQL 8.0.42: Acesso root/root - TOTAL AO BANCO
+- Zabbix 4.4.6: Credenciais padrão Admin/zabbix
 ```
 
 ### 📊 Inventário de Dispositivos
@@ -92,8 +97,44 @@ A topologia acima apresenta a estrutura completa do laboratório, com três rede
 | Rede | Subnet | Dispositivos | Função | Status Segurança |
 |------|--------|--------------|--------|------------------|
 | **corp_net** | `10.10.10.0/24` | 6 hosts | Rede Corporativa | ⚠️ Parcialmente Segura |
-| **guest_net** | `10.10.50.0/24` | 5 hosts | Rede Visitantes | ✅ Adequadamente Isolada |
+| **guest_net** | `10.10.50.0/24` | 6 hosts | Rede Visitantes | ✅ Adequadamente Isolada |
 | **infra_net** | `10.10.30.0/24` | 8 hosts | Infraestrutura Crítica | 🔴 **INSEGURA** |
+
+**Total: 20 dispositivos ativos descobertos**
+
+### 🗺️ Mapeamento Detalhado dos Dispositivos
+
+#### 🏢 CORP_NET (10.10.10.0/24) - 6 dispositivos
+```
+10.10.10.1   → Gateway/Router (SSH:22)
+10.10.10.2   → Analyst Station  
+10.10.10.10  → WS_001 (Workstation)
+10.10.10.101 → WS_002 (Workstation)  
+10.10.10.127 → WS_003 (Workstation)
+10.10.10.222 → WS_004 (Workstation)
+```
+
+#### 👥 GUEST_NET (10.10.50.0/24) - 6 dispositivos  
+```
+10.10.50.1 → Gateway/Router (SSH:22)
+10.10.50.2 → laptop-luiz
+10.10.50.3 → macbook-aline  
+10.10.50.4 → [dispositivo] (porta dinâmica 53390)
+10.10.50.5 → notebook-carlos
+10.10.50.6 → laptop-vastro
+```
+
+#### 🏗️ INFRA_NET (10.10.30.0/24) - 8 dispositivos
+```
+10.10.30.1   → Gateway/Router (SSH:22)
+10.10.30.2   → Analyst Station
+10.10.30.10  → 🔴 ftp-server (FTP:21 Pure-FTPd) - MÉDIO
+10.10.30.11  → 🔴 mysql-server (MySQL:3306,33060 v8.0.42) - CRÍTICO  
+10.10.30.15  → 🟡 samba-server (SMB:139,445) - ALTO
+10.10.30.17  → 🟡 openldap (LDAP:389,636) - ALTO
+10.10.30.117 → 🔴 zabbix-server (HTTP:80, Zabbix:10051,10052 v4.4.6) - CRÍTICO
+10.10.30.227 → legacy-server (status desconhecido)
+```
 
 ---
 
@@ -194,18 +235,18 @@ nmap --script=http-default-accounts 10.10.30.117
 
 | Severidade | Dispositivo | Serviço | Vulnerabilidade | CVSS |
 |------------|-------------|---------|-----------------|------|
-| 🔴 **CRÍTICO** | 10.10.30.117 | Zabbix | Credenciais Padrão (Admin/zabbix) | 9.8 |
-| � **MÉDIO** | 10.10.30.10 | FTP | Erro de Configuração (puredb file) + Serviço Exposto | 5.3 |
-| 🔴 **CRÍTICO** | 10.10.30.11 | MySQL | Acesso Root Universal (%) + 88 Privilégios Admin + Grant Option | 9.8 |
+| 🔴 **CRÍTICO** | 10.10.30.117 | Zabbix 4.4.6 | Credenciais Padrão (Admin/zabbix) + Interface Web Exposta | 9.8 |
+| � **MÉDIO** | 10.10.30.10 | Pure-FTPd | Erro de Configuração (puredb file) + Serviço Exposto | 5.3 |
+| 🔴 **CRÍTICO** | 10.10.30.11 | MySQL 8.0.42 | Acesso Root Universal (%) + 88 Privilégios Admin + Grant Option | 9.8 |
 
 ### 📈 Estatísticas de Segurança
 
 ```
-Total de Dispositivos: 17
-├── Vulnerabilidades Críticas: 2 (🔴 11.8%)
-├── Vulnerabilidades Altas: 4 (🟡 23.5%) 
-├── Vulnerabilidades Médias: 8 (🟠 47.1%)
-└── Dispositivos Seguros: 3 (🟢 17.6%)
+Total de Dispositivos: 20
+├── Vulnerabilidades Críticas: 2 (🔴 10.0%)
+├── Vulnerabilidades Altas: 2 (🟡 10.0%) - LDAP/SMB
+├── Vulnerabilidades Médias: 1 (🟠 5.0%) - FTP
+└── Dispositivos Seguros: 15 (🟢 75.0%)
 
 Recomendação: AÇÃO IMEDIATA NECESSÁRIA
 ```
@@ -287,17 +328,20 @@ nmap --script=http-default-accounts 10.10.30.117
 
 #### 1. Zabbix Server (10.10.30.117)
 ```bash
-# Teste de acesso
+# Teste de acesso via web
 curl http://10.10.30.117
+# Versão confirmada: Zabbix 4.4.6 (2001–2020, Zabbix SIA)
 # Credenciais: Admin/zabbix (PADRÃO)
+# Status: Interface web totalmente acessível
 ```
 
 #### 2. FTP Server (10.10.30.10)  
 ```bash
 # Teste de configuração
 ftp 10.10.30.10
+# Serviço: Pure-FTPd
 # Resultado: Erro de configuração puredb
-# Status: Acesso anônimo DESABILITADO (seguro)
+# Status: Acesso anônimo DESABILITADO (configuração segura)
 ```
 
 #### 3. MySQL Server (10.10.30.11)
@@ -307,6 +351,7 @@ nmap -sV -p 3306,33060 10.10.30.11
 
 # VULNERABILIDADE CRÍTICA CONFIRMADA
 mysql -h 10.10.30.11 -u root -p --ssl=0
+# Versão: MySQL 8.0.42
 # Password: root (CREDENCIAIS PADRÃO)
 # Result: Acesso completo ao servidor MySQL
 
@@ -332,9 +377,9 @@ mysql> SELECT user,host FROM mysql.user;
 ### 🛡️ Recomendações de Mitigação
 
 1. **Imediato (0-7 dias)**:
-   - Alterar senhas padrão do Zabbix
-   - Alterar senha root do MySQL (URGENTE)
-   - Corrigir configuração FTP puredb
+   - Alterar senhas padrão do Zabbix 4.4.6 (URGENTE)
+   - Alterar senha root do MySQL 8.0.42 (CRÍTICO)
+   - Corrigir configuração Pure-FTPd puredb
    - Configurar firewall para infra_net
 
 2. **Médio Prazo (1-4 semanas)**:
@@ -363,9 +408,9 @@ mysql> SELECT user,host FROM mysql.user;
 
 
 ### 🖥️ Serviços Simulados
-- **Pure-FTPd**: Servidor FTP vulnerável
-- **MySQL 8.0**: Banco de dados exposto
-- **Zabbix**: Sistema de monitoramento
+- **Pure-FTPd**: Servidor FTP com erro de configuração
+- **MySQL 8.0.42**: Banco de dados com credenciais padrão
+- **Zabbix 4.4.6**: Sistema de monitoramento vulnerável
 - **OpenLDAP**: Serviço de diretório
 - **Samba**: Compartilhamento de arquivos
 
@@ -385,9 +430,11 @@ mysql> SELECT user,host FROM mysql.user;
 ### 📊 Resultados Quantificados
 
 ```
-Dispositivos Descobertos: 17/17 (100%)
-Serviços Identificados: 15 serviços únicos
-Vulnerabilidades Críticas: 3 confirmadas
+Dispositivos Descobertos: 20/20 (100%)
+Serviços Identificados: 17 portas abertas
+Vulnerabilidades Críticas: 2 confirmadas
+Vulnerabilidades Altas: 2 confirmadas  
+Vulnerabilidades Médias: 1 confirmada
 Tempo de Auditoria: ~4 horas
 Relatórios Gerados: 4 formatos diferentes
 ```
