@@ -4,9 +4,8 @@
   "description": "Laboratório de Auditoria de Segurança de Rede - Projeto de Cybersecurity",
   "main": "Relatorio_Auditoria_Profissional.html",
   "scripts": {
-    "dev": "npx serve .",
-    "build": "echo 'Static site - no build needed'",
-    "start": "npx serve ."
+    "build": "",
+    "start": "echo 'Static site ready'"
   },
   "keywords": [
     "cybersecurity",
