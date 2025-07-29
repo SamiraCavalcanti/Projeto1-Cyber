@@ -195,17 +195,17 @@ nmap --script=http-default-accounts 10.10.30.117
 | Severidade | Dispositivo | Serviço | Vulnerabilidade | CVSS |
 |------------|-------------|---------|-----------------|------|
 | 🔴 **CRÍTICO** | 10.10.30.117 | Zabbix | Credenciais Padrão (Admin/zabbix) | 9.8 |
-| 🔴 **CRÍTICO** | 10.10.30.10 | FTP | Acesso Anônimo Habilitado | 8.6 |
-| 🔴 **CRÍTICO** | 10.10.30.11 | MySQL | Credenciais Padrão (root/root) + Acesso Remoto | 9.0 |
+| � **MÉDIO** | 10.10.30.10 | FTP | Erro de Configuração (puredb file) + Serviço Exposto | 5.3 |
+| 🔴 **CRÍTICO** | 10.10.30.11 | MySQL | Acesso Root Universal (%) + 88 Privilégios Admin + Grant Option | 9.8 |
 
 ### 📈 Estatísticas de Segurança
 
 ```
 Total de Dispositivos: 17
-├── Vulnerabilidades Críticas: 3 (🔴 17.6%)
+├── Vulnerabilidades Críticas: 2 (🔴 11.8%)
 ├── Vulnerabilidades Altas: 4 (🟡 23.5%) 
-├── Vulnerabilidades Médias: 7 (🟠 41.2%)
-└── Dispositivos Seguros: 3 (🟢 17.7%)
+├── Vulnerabilidades Médias: 8 (🟠 47.1%)
+└── Dispositivos Seguros: 3 (🟢 17.6%)
 
 Recomendação: AÇÃO IMEDIATA NECESSÁRIA
 ```
@@ -294,10 +294,10 @@ curl http://10.10.30.117
 
 #### 2. FTP Server (10.10.30.10)  
 ```bash
-# Teste de acesso anônimo
+# Teste de configuração
 ftp 10.10.30.10
-# Username: anonymous
-# Password: (vazio)
+# Resultado: Erro de configuração puredb
+# Status: Acesso anônimo DESABILITADO (seguro)
 ```
 
 #### 3. MySQL Server (10.10.30.11)
@@ -310,6 +310,18 @@ mysql -h 10.10.30.11 -u root -p --ssl=0
 # Password: root (CREDENCIAIS PADRÃO)
 # Result: Acesso completo ao servidor MySQL
 
+# Evidência de Acesso Root Universal:
+mysql> SELECT user,host FROM mysql.user;
++------------------+-----------+
+| user             | host      |
++------------------+-----------+
+| root             | %         |  # <- CRÍTICO: Root aceita qualquer host
+| mysql.infoschema | localhost |
+| mysql.session    | localhost |
+| mysql.sys        | localhost |
+| root             | localhost |
++------------------+-----------+
+
 # Bases de dados expostas:
 # - information_schema
 # - mysql  
@@ -321,7 +333,8 @@ mysql -h 10.10.30.11 -u root -p --ssl=0
 
 1. **Imediato (0-7 dias)**:
    - Alterar senhas padrão do Zabbix
-   - Desabilitar acesso anônimo FTP
+   - Alterar senha root do MySQL (URGENTE)
+   - Corrigir configuração FTP puredb
    - Configurar firewall para infra_net
 
 2. **Médio Prazo (1-4 semanas)**:
